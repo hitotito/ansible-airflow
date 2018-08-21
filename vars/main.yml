@@ -1,0 +1,3 @@
+airflow_facts: "{{ hostvars[inventory_hostname].ansible_local.hitotito_airflow }}"
+airflow_installed: "{{ airflow_facts.airflow.installed }}"
+airflow_binary: "{{ airflow_facts.airflow.path }}"

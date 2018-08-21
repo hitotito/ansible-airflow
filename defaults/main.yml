@@ -1,0 +1,16 @@
+airflow_user: airflow
+airflow_group: airflow
+
+airflow_os_folder_pid: /run/airflow
+airflow_os_folder_systemd: /etc/systemd/system
+
+airflow_folder_home: /srv/airflow
+airflow_folder_dags: "{{ airflow_folder_home }}/dags"
+airflow_folder_logs: "{{ airflow_folder_home }}/logs"
+airflow_folder_plugins: "{{ airflow_folder_home }}/plugins"
+airflow_folder_systemd: "{{ airflow_folder_home }}/systemd"
+
+# executor can be ("SequentialExecutor", "LocalExecutor", CeleryExecutor","DaskExecutor")
+airflow_executor: "SequentialExecutor"
+
+airflow_sql_alchemy_conn: "sqlite:////{{ airflow_folder_home }}/airflow.db"

@@ -1,0 +1,8 @@
+---
+- name: install airflow common components
+  import_tasks: install_common.yml
+  tags: always
+
+- name: install airflow web
+  import_tasks: install_web.yml
+  tags: web

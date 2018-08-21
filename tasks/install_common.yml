@@ -1,0 +1,58 @@
+---
+- name: COMMON | Ensure airflow user exists
+  user:
+    name: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: COMMON | Create directory structure
+  with_items:
+    - "{{ airflow_folder_home }}"
+    - "{{ airflow_folder_dags }}"
+    - "{{ airflow_folder_logs }}"
+    - "{{ airflow_folder_plugins }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0744
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: COMMON | Copy airflow_profile.sh
+  template:
+    src: airflow_profile.sh.j2
+    dest: /etc/profile.d/airflow_profile.sh
+    mode: 0644
+
+- name: COMMON | Install airflow
+  when: not airflow_installed
+  block:
+    - name: COMMON | Install airflow package
+      pip:
+        name: apache-airflow
+
+    - name: Re-run setup to use custom facts
+      setup: ~
+
+- name: COMMON | Copy airflow files
+  with_items:
+    - src: env.j2
+      dest: "{{ airflow_folder_home }}/env"
+    - src: airflow.cfg.j2
+      dest: "{{ airflow_folder_home }}/airflow.cfg"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+# TODO - database bootstraping should be separated from installation
+- name: COMMON | Bootstrap database
+  become: true
+  become_user: "{{ airflow_user }}"
+  environment:
+    AIRFLOW_HOME: "{{ airflow_folder_home }}"
+  shell: |
+    airflow initdb | tee "{{ airflow_folder_home }}/db_initialized"
+  args:
+    creates: "{{ airflow_folder_home }}/db_initialized"

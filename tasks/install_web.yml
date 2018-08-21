@@ -1,0 +1,30 @@
+---
+- name: WEB | Create directory structure
+  with_items:
+    - "{{ airflow_os_folder_pid }}"
+    - "{{ airflow_folder_systemd }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0744
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: WEB | Copy systemd service file
+  template:
+    src: airflow-web.service.j2
+    dest: "{{ airflow_folder_systemd }}/airflow-web.service"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+  notify:
+    - restart web
+
+- name: WEB | Create systemd service symlink
+  file:
+    src: "{{ airflow_folder_systemd }}/airflow-web.service"
+    dest: "{{ airflow_os_folder_systemd }}/airflow-web.service"
+    state: link
+    force: yes
+  notify:
+    - restart web

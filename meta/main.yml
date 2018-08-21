@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: airflow
+  author: Hitoshi Okonogi
+  description: role to install & manage airflow
+  license: MIT
+  min_ansible_version: 2.2
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+  galaxy_tags:
+    - airflow
+
+dependencies:
+  - role: hitotito.custom-facts
+    custom_facts_name: hitotito_airflow
+    custom_facts_file: airflow.fact
