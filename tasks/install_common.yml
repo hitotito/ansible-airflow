@@ -27,8 +27,11 @@
   when: not airflow_installed
   block:
     - name: COMMON | Install airflow package
+      with_items:
+        - apache-airflow
+        - psycopg2
       pip:
-        name: apache-airflow
+        name: "{{ item }}"
 
     - name: Re-run setup to use custom facts
       setup: ~
