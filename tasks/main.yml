@@ -1,8 +1,27 @@
 ---
-- name: install airflow common components
+- name: Install airflow common components
   import_tasks: install_common.yml
-  tags: always
+  tags:
+    - always
 
-- name: install airflow web
+- name: Install airflow web
   import_tasks: install_web.yml
-  tags: web
+  when: "'web' in airflow_components"
+  tags:
+    - web
+
+- name: Install airflow scheduler
+  import_tasks: install_scheduler.yml
+  when: "'scheduler' in airflow_components"
+  tags:
+    - scheduler
+
+- name: Install airflow worker
+  import_tasks: install_worker.yml
+  when: "'worker' in airflow_components"
+  tags:
+    - worker
+
+# TODO
+# install flower
+# install kerbeos

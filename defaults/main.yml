@@ -1,3 +1,7 @@
+---
+# airflow_components could be: ['web', 'scheduler', 'worker']
+airflow_components: []
+
 airflow_user: airflow
 airflow_group: airflow
 

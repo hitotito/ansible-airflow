@@ -4,3 +4,15 @@
     name: airflow-web
     state: restarted
     daemon_reload: yes
+
+- name: restart scheduler
+  systemd:
+    name: airflow-scheduler
+    state: restarted
+    daemon_reload: yes
+
+- name: restart worker
+  systemd:
+    name: airflow-worker
+    state: restarted
+    daemon_reload: yes

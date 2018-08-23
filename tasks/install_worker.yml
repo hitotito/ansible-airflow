@@ -1,0 +1,30 @@
+---
+- name: WORKER | Create directory structure
+  with_items:
+    - "{{ airflow_os_folder_pid }}"
+    - "{{ airflow_folder_systemd }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0744
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: WORKER | Copy systemd service file
+  template:
+    src: airflow-worker.service.j2
+    dest: "{{ airflow_folder_systemd }}/airflow-worker.service"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+  notify:
+    - restart worker
+
+- name: WORKER | Create systemd service symlink
+  file:
+    src: "{{ airflow_folder_systemd }}/airflow-worker.service"
+    dest: "{{ airflow_os_folder_systemd }}/airflow-worker.service"
+    state: link
+    force: yes
+  notify:
+    - restart worker
