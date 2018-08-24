@@ -28,3 +28,9 @@
     force: yes
   notify:
     - restart worker
+
+- name: WORKER | Enable systemd service
+  systemd:
+    name: airflow-worker
+    enabled: yes
+    daemon_reload: yes

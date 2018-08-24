@@ -1,0 +1,35 @@
+---
+- name: FLOWER | Create directory structure
+  with_items:
+    - "{{ airflow_os_folder_pid }}"
+    - "{{ airflow_folder_systemd }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+
+- name: FLOWER | Copy systemd service file
+  template:
+    src: airflow-flower.service.j2
+    dest: "{{ airflow_folder_systemd }}/airflow-flower.service"
+    mode: 0644
+    owner: "{{ airflow_user }}"
+    group: "{{ airflow_group }}"
+  notify:
+    - restart flower
+
+- name: FLOWER | Create systemd service symlink
+  file:
+    src: "{{ airflow_folder_systemd }}/airflow-flower.service"
+    dest: "{{ airflow_os_folder_systemd }}/airflow-flower.service"
+    state: link
+    force: yes
+  notify:
+    - restart flower
+
+- name: FLOWER | Enable systemd service
+  systemd:
+    name: airflow-flower
+    enabled: yes
+    daemon_reload: yes

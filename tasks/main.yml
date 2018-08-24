@@ -4,11 +4,11 @@
   tags:
     - always
 
-- name: Install airflow web
-  import_tasks: install_web.yml
-  when: "'web' in airflow_components"
+- name: Install airflow flower
+  import_tasks: install_flower.yml
+  when: "'flower' in airflow_components"
   tags:
-    - web
+    - flower
 
 - name: Install airflow scheduler
   import_tasks: install_scheduler.yml
@@ -16,12 +16,18 @@
   tags:
     - scheduler
 
+- name: Install airflow web
+  import_tasks: install_web.yml
+  when: "'web' in airflow_components"
+  tags:
+    - web
+
 - name: Install airflow worker
   import_tasks: install_worker.yml
   when: "'worker' in airflow_components"
   tags:
     - worker
 
+
 # TODO
-# install flower
 # install kerbeos

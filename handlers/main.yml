@@ -1,7 +1,7 @@
 ---
-- name: restart web
+- name: restart flower
   systemd:
-    name: airflow-web
+    name: airflow-flower
     state: restarted
     daemon_reload: yes
 
@@ -11,8 +11,17 @@
     state: restarted
     daemon_reload: yes
 
+- name: restart web
+  systemd:
+    name: airflow-web
+    state: restarted
+    daemon_reload: yes
+
 - name: restart worker
   systemd:
     name: airflow-worker
     state: restarted
     daemon_reload: yes
+
+
+# TODO - reload

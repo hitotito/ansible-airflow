@@ -28,3 +28,9 @@
     force: yes
   notify:
     - restart scheduler
+
+- name: SCHEDULER | Enable systemd service
+  systemd:
+    name: airflow-scheduler
+    enabled: yes
+    daemon_reload: yes

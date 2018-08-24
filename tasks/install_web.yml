@@ -28,3 +28,9 @@
     force: yes
   notify:
     - restart web
+
+- name: WEB | Enable systemd service
+  systemd:
+    name: airflow-web
+    enabled: yes
+    daemon_reload: yes

@@ -23,18 +23,18 @@
     dest: /etc/profile.d/airflow_profile.sh
     mode: 0644
 
-- name: COMMON | Install airflow
-  when: not airflow_installed
-  block:
-    - name: COMMON | Install airflow package
-      with_items:
-        - apache-airflow
-        - psycopg2
-      pip:
-        name: "{{ item }}"
+- name: COMMON | Install airflow packages
+  with_items:
+    - apache-airflow
+    - psycopg2-binary
+    - apache-airflow[celery]
+    - redis
+  pip:
+    name: "{{ item }}"
 
-    - name: Re-run setup to use custom facts
-      setup: ~
+- name: Re-run setup to use custom facts
+  setup: ~
+  when: not airflow_installed
 
 - name: COMMON | Copy airflow files
   with_items:
@@ -59,3 +59,4 @@
     airflow initdb | tee "{{ airflow_folder_home }}/db_initialized"
   args:
     creates: "{{ airflow_folder_home }}/db_initialized"
+
