@@ -28,16 +28,20 @@
     dest: /etc/profile.d/airflow_profile.sh
     mode: 0644
 
-- name: COMMON | Install airflow packages
+- name: COMMON | Install airflow package
+  pip:
+    name: apache-airflow
+    version: 1.9.0
+  environment:
+    AIRFLOW_GPL_UNIDECODE: yes
+
+- name: COMMON | Install airflow dependencies
   with_items:
-    - apache-airflow
     - psycopg2-binary
     - apache-airflow[celery]
     - redis
   pip:
     name: "{{ item }}"
-  environment:
-    AIRFLOW_GPL_UNIDECODE: yes
 
 - name: Re-run setup to use custom facts
   setup: ~
