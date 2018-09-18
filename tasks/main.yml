@@ -28,6 +28,12 @@
   tags:
     - worker
 
-
 # TODO
 # install kerbeos
+
+- name: Install consul service definition
+  import_tasks: consul.yml
+  when: airflow_consul_service_enabled
+  tags:
+    - consul_definition
+

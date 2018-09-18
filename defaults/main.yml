@@ -16,9 +16,12 @@ airflow_folder_systemd: "{{ airflow_folder_home }}/systemd"
 
 # executor can be ("SequentialExecutor", "LocalExecutor", CeleryExecutor","DaskExecutor")
 airflow_executor: "SequentialExecutor"
-
 airflow_sql_alchemy_conn: "sqlite:////{{ airflow_folder_home }}/airflow.db"
 
+
+# Web server
+airflow_web_server_host: "0.0.0.0"
+airflow_web_server_port: 8080
 
 # CeleryExecutor
 airflow_celery_app_name: "airflow.executors.celery_executor"
@@ -30,3 +33,10 @@ airflow_flower_host: "0.0.0.0"
 airflow_flower_port: 5555
 airflow_default_queue: "default"
 airflow_celery_config_options: "airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG"
+
+# Consul integration
+airflow_consul_service_enabled: false
+airflow_flower_consul_service_name: "airflow-flower"
+airflow_scheduler_consul_service_name: "airflow-scheduler"
+airflow_web_consul_service_name: "airflow-web"
+airflow_worker_consul_service_name: "airflow-worker"

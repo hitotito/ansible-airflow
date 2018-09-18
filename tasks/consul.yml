@@ -1,0 +1,40 @@
+---
+- name: CONSUL | call hitotito.consul service tasks [flower]
+  when: "'flower' in airflow_components"
+  include_role:
+    name: hitotito.consul
+    tasks_from: service
+    private: yes
+  vars:
+    consul_service_name: "{{ airflow_flower_consul_service_name }}"
+    consul_service_ports: ["{{ airflow_flower_port }}"]
+
+- name: CONSUL | call hitotito.consul service tasks [scheduler]
+  when: "'scheduler' in airflow_components"
+  include_role:
+    name: hitotito.consul
+    tasks_from: service
+    private: yes
+  vars:
+    consul_service_name: "{{ airflow_scheduler_consul_service_name }}"
+    consul_service_ports: [9100]  # TODO - implement better process level check
+
+- name: CONSUL | call hitotito.consul service tasks [web]
+  when: "'web' in airflow_components"
+  include_role:
+    name: hitotito.consul
+    tasks_from: service
+    private: yes
+  vars:
+    consul_service_name: "{{ airflow_web_consul_service_name }}"
+    consul_service_ports: ["{{ airflow_web_server_port }}"]
+
+- name: CONSUL | call hitotito.consul service tasks [worker]
+  when: "'worker' in airflow_components"
+  include_role:
+    name: hitotito.consul
+    tasks_from: service
+    private: yes
+  vars:
+    consul_service_name: "{{ airflow_worker_consul_service_name }}"
+    consul_service_ports: ["{{ airflow_log_server_port }}"]
