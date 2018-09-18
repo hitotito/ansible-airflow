@@ -1,27 +1,30 @@
 ---
 - name: restart flower
+  when: "'flower' in airflow_components"
   systemd:
     name: airflow-flower
     state: restarted
     daemon_reload: yes
 
 - name: restart scheduler
+  when: "'scheduler' in airflow_components"
   systemd:
     name: airflow-scheduler
     state: restarted
     daemon_reload: yes
 
 - name: restart web
+  when: "'web' in airflow_components"
   systemd:
     name: airflow-web
     state: restarted
     daemon_reload: yes
 
 - name: restart worker
+  when: "'worker' in airflow_components"
   systemd:
     name: airflow-worker
     state: restarted
     daemon_reload: yes
-
 
 # TODO - reload

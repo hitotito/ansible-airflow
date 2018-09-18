@@ -1,4 +1,9 @@
 ---
+- name: COMMON | Ensure airflow group exists
+  group:
+    name: "{{ airflow_group }}" 
+    state: present
+
 - name: COMMON | Ensure airflow user exists
   user:
     name: "{{ airflow_user }}"
@@ -31,6 +36,8 @@
     - redis
   pip:
     name: "{{ item }}"
+  environment:
+    AIRFLOW_GPL_UNIDECODE: yes
 
 - name: Re-run setup to use custom facts
   setup: ~
@@ -48,6 +55,11 @@
     mode: 0644
     owner: "{{ airflow_user }}"
     group: "{{ airflow_group }}"
+  notify:
+    - restart flower
+    - restart scheduler
+    - restart web
+    - restart worker
 
 # TODO - database bootstraping should be separated from installation
 - name: COMMON | Bootstrap database
