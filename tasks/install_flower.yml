@@ -1,7 +1,6 @@
 ---
 - name: FLOWER | Create directory structure
   with_items:
-    - "{{ airflow_os_folder_pid }}"
     - "{{ airflow_folder_systemd }}"
   file:
     path: "{{ item }}"
