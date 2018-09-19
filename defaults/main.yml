@@ -5,7 +5,7 @@ airflow_components: []
 airflow_user: airflow
 airflow_group: airflow
 
-airflow_os_folder_pid: /run
+airflow_os_folder_pid: /var/run
 airflow_os_folder_systemd: /etc/systemd/system
 
 airflow_folder_home: /srv/airflow

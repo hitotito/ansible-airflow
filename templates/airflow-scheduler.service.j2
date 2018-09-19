@@ -26,7 +26,11 @@ EnvironmentFile={{ airflow_folder_home }}/env
 User={{ airflow_user }}
 Group={{ airflow_group }}
 Type=simple
-ExecStart={{ airflow_binary }} scheduler --pid {{ airflow_os_folder_pid }}/airflow-scheduler.pid
+PermissionsStartOnly=true
+PIDFile={{ airflow_os_folder_pid }}/airflow/airflow-scheduler.pid
+ExecStartPre=-/bin/mkdir -p {{ airflow_os_folder_pid }}/airflow
+ExecStartPre=/bin/chown -R {{ airflow_user }}:{{ airflow_group }} {{ airflow_os_folder_pid}}/airflow/
+ExecStart={{ airflow_binary }} scheduler --pid {{ airflow_os_folder_pid }}/airflow/airflow-scheduler.pid
 Restart=always
 RestartSec=5s
 
