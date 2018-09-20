@@ -7,6 +7,7 @@
     private: yes
   vars:
     consul_service_name: "{{ airflow_flower_consul_service_name }}"
+    consul_service_check: 'http'
     consul_service_ports: ["{{ airflow_flower_port }}"]
 
 - name: CONSUL | call hitotito.consul service tasks [scheduler]
@@ -17,7 +18,9 @@
     private: yes
   vars:
     consul_service_name: "{{ airflow_scheduler_consul_service_name }}"
-    consul_service_ports: [9100]  # TODO - implement better process level check
+    consul_service_check: "script"
+    consul_service_check_name: "Check-service is up"
+    consul_service_check_script_args: ["/srv/consul/bin/check_systemd_active.py", 'airflow-scheduler.service'] # TODO
 
 - name: CONSUL | call hitotito.consul service tasks [web]
   when: "'web' in airflow_components"
@@ -27,6 +30,7 @@
     private: yes
   vars:
     consul_service_name: "{{ airflow_web_consul_service_name }}"
+    consul_service_check: 'http'
     consul_service_ports: ["{{ airflow_web_server_port }}"]
 
 - name: CONSUL | call hitotito.consul service tasks [worker]
@@ -37,4 +41,6 @@
     private: yes
   vars:
     consul_service_name: "{{ airflow_worker_consul_service_name }}"
-    consul_service_ports: ["{{ airflow_log_server_port }}"]
+    consul_service_check: "script"
+    consul_service_check_name: "Check-service is up"
+    consul_service_check_script_args: ["/srv/consul/bin/check_systemd_active.py", 'airflow-worker.service'] # TODO
