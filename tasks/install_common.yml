@@ -31,7 +31,7 @@
 - name: COMMON | Install airflow package
   pip:
     name: apache-airflow
-    version: 1.9.0
+    version: "{{ airflow_version }}"
   environment:
     AIRFLOW_GPL_UNIDECODE: yes
 
@@ -51,7 +51,7 @@
   with_items:
     - src: env.j2
       dest: "{{ airflow_folder_home }}/env"
-    - src: airflow.cfg.j2
+    - src: "airflow-{{ airflow_config_template_version }}.cfg.j2"
       dest: "{{ airflow_folder_home }}/airflow.cfg"
   template:
     src: "{{ item.src }}"

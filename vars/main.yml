@@ -1,3 +1,8 @@
 airflow_facts: "{{ hostvars[inventory_hostname].ansible_local.hitotito_airflow }}"
 airflow_installed: "{{ airflow_facts.airflow.installed }}"
 airflow_binary: "{{ airflow_facts.airflow.path }}"
+
+_airflow_config_template_version_map:
+  1.9.0: "1.9"
+  1.10.0: "1.10"
+airflow_config_template_version: "{{ _airflow_config_template_version_map[airflow_version] | default('1.10') }}"

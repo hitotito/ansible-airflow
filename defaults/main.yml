@@ -1,4 +1,6 @@
 ---
+airflow_version: 1.10.0
+
 # airflow_components could be: ['web', 'scheduler', 'worker']
 airflow_components: []
 
@@ -33,6 +35,9 @@ airflow_flower_host: "0.0.0.0"
 airflow_flower_port: 5555
 airflow_default_queue: "default"
 airflow_celery_config_options: "airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG"
+
+airflow_log_filename_template: !unsafe '{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{{ try_number }}.log'
+airflow_log_processor_filename_template: !unsafe '{{ filename }}.log'
 
 # Consul integration
 airflow_consul_service_enabled: false
